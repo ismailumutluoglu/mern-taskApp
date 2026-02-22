@@ -22,4 +22,6 @@ const TaskSchema = new mongoose.Schema({
   timestamps: true    // Bu ayar MongoDB'de otomatik olarak 'createdAt' ve 'updatedAt' alanları oluşturur
 });
 
-export default TaskSchema;
+const TaskModel = mongoose.model("Tasks",TaskSchema);
+
+export default TaskModel;

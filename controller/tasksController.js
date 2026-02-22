@@ -1,3 +1,5 @@
+import TaskModel from "../models/taskModel.js";
+
 export const getAllTasks = async(req,res) => {
     res.send("get all tasks");
 }
