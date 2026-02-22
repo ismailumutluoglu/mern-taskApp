@@ -4,12 +4,18 @@ export const getAllTasks = async(req,res) => {
     res.send("get all tasks");
 }
 
-export const getSingleTasks = async(req,res) => {
-    res.json({id:req.params.id});
+export const createTasks = async(req,res) => {
+    try {
+        const task = await TaskModel.create(req.body);
+        res.status(201).json({task});
+    } catch (error) {
+        res.status(500).json({msg : error});
+    }
+    
 }
 
-export const createTasks = async(req,res) => {
-    res.json(req.body);
+export const getSingleTasks = async(req,res) => {
+    res.json({id:req.params.id});
 }
 
 export const updateTasks = async(req,res) => {
