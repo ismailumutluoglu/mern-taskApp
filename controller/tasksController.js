@@ -1,7 +1,12 @@
 import TaskModel from "../models/taskModel.js";
 
 export const getAllTasks = async(req,res) => {
-    res.send("get all tasks");
+    try {
+        const tasks = await TaskModel.find();
+        res.status(200).send({tasks});
+    } catch (error) {
+        res.status(500).json({msg : error});
+    }
 }
 
 export const createTasks = async(req,res) => {
@@ -10,8 +15,7 @@ export const createTasks = async(req,res) => {
         res.status(201).json({task});
     } catch (error) {
         res.status(500).json({msg : error});
-    }
-    
+    } 
 }
 
 export const getSingleTasks = async(req,res) => {

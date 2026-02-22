@@ -8,7 +8,6 @@ import connectDB from './db/connectDB.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const DATABASE_URL = process.env.DATABASE_URL;
 
 //middleware
 app.use(express.json());
@@ -23,7 +22,7 @@ app.use('/api/v1/tasks',routes);
 
 const start = async() => {
   try {
-    await connectDB(DATABASE_URL);
+    await connectDB(process.env.DATABASE_URL);
     app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
     console.log(`http://localhost:${PORT}`);
   } catch (error) {
