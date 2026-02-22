@@ -10,12 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 //middleware
+app.use(express.static('./public'));
 app.use(express.json());
 
 //Routes
-app.get('/', (req, res) => {
-  res.send('Task Manager API sorunsuz çalışıyor...');
-});
 
 app.use('/api/v1/tasks',routes);
 
