@@ -2,7 +2,7 @@ import TaskModel from "../models/taskModel.js";
 
 export const getAllTasks = async(req,res) => {
     try {
-        const tasks = await TaskModel.find();
+        const tasks = await TaskModel.find({});
         res.status(200).send({tasks});
     } catch (error) {
         res.status(500).json({msg : error});
@@ -19,7 +19,19 @@ export const createTasks = async(req,res) => {
 }
 
 export const getSingleTasks = async(req,res) => {
-    res.json({id:req.params.id});
+    try {
+        const { id } = req.params ; 
+        const task = await TaskModel.findById(id);
+
+        if(!task)
+        {
+            return res.status(404).json({msg : `No Task with id ${id}`});
+        }
+
+        res.status(200).json({task});
+    } catch (error) {
+        res.status(500).json({msg : error});
+    }
 }
 
 export const updateTasks = async(req,res) => {
