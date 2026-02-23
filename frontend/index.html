@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Görev Yöneticisi</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="min-h-screen font-sans antialiased bg-white overflow-x-hidden">
+    <div class="max-w-xl mx-auto px-5 py-14 sm:px-6 relative z-10">
+      <!-- ===== HEADER ===== -->
+      <header class="mb-10 fade-in">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="header-icon">
+            <svg
+              class="w-5 h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+              />
+            </svg>
+          </div>
+          <div>
+            <p
+              id="dateText"
+              class="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400"
+            ></p>
+            <h1
+              class="text-[1.75rem] font-extrabold text-gray-900 tracking-tight leading-none"
+            >
+              Görevlerim
+            </h1>
+          </div>
+        </div>
+        <p class="text-gray-400 text-[13px] font-medium ml-[52px]">
+          Organize ol, üretken kal ✨
+        </p>
+      </header>
+
+      <!-- ===== ADD TASK FORM ===== -->
+      <form
+        id="taskForm"
+        class="mb-8 fade-in"
+        style="animation-delay: 0.08s"
+        autocomplete="off"
+      >
+        <div
+          id="formWrapper"
+          class="glass-card flex items-center rounded-2xl transition-all duration-300 form-input-wrapper"
+        >
+          <!-- Plus icon -->
+          <div class="pl-4 pr-1 shrink-0">
+            <div
+              id="plusIcon"
+              class="w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 bg-gray-100 text-gray-400"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+            </div>
+          </div>
+          <input
+            id="taskInput"
+            type="text"
+            maxlength="20"
+            placeholder="Yeni görev ekle..."
+            class="flex-1 py-4 px-3 bg-transparent text-gray-900 placeholder-gray-300 text-[15px] font-medium focus:outline-none"
+          />
+          <span
+            id="charCount"
+            class="text-[11px] font-semibold text-gray-300 mr-2 tabular-nums hidden transition-colors"
+            >0/20</span
+          >
+          <div class="pr-3 shrink-0">
+            <button type="submit" id="addBtn" disabled class="add-btn-disabled">
+              <svg
+                class="w-4 h-4 mr-1.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Ekle
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- ===== STATS & FILTERS ===== -->
+      <div class="mb-6 fade-in" style="animation-delay: 0.16s">
+        <!-- Stats cards -->
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="stat-card">
+            <span class="stat-number" id="totalCount">0</span>
+            <span class="stat-label">Toplam</span>
+          </div>
+          <div class="stat-card stat-card-active">
+            <span class="stat-number" id="activeCount">0</span>
+            <span class="stat-label">Aktif</span>
+          </div>
+          <div class="stat-card stat-card-done">
+            <span class="stat-number" id="completedCount">0</span>
+            <span class="stat-label">Tamamlanan</span>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="glass-card rounded-xl px-4 py-3 mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <span
+              class="text-[12px] font-semibold text-gray-400 uppercase tracking-wider"
+              >İlerleme</span
+            >
+            <span
+              id="progressText"
+              class="text-[13px] font-bold text-gray-600 tabular-nums"
+              >0%</span
+            >
+          </div>
+          <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div id="progressBar" class="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="flex gap-1.5 p-1.5 glass-card rounded-2xl" id="filterTabs">
+          <button
+            data-filter="all"
+            class="filter-btn active flex-1 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-300"
+          >
+            Tümü <span class="count ml-1 text-[11px] opacity-60">0</span>
+          </button>
+          <button
+            data-filter="active"
+            class="filter-btn flex-1 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-300 text-gray-400 hover:text-gray-600"
+          >
+            Aktif <span class="count ml-1 text-[11px] opacity-60">0</span>
+          </button>
+          <button
+            data-filter="completed"
+            class="filter-btn flex-1 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-all duration-300 text-gray-400 hover:text-gray-600"
+          >
+            Bitti <span class="count ml-1 text-[11px] opacity-60">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== TASK LIST ===== -->
+      <div id="taskList" class="space-y-2">
+        <!-- Tasks will be rendered here -->
+      </div>
+
+      <!-- ===== EMPTY STATE ===== -->
+      <div
+        id="emptyState"
+        class="hidden flex-col items-center justify-center py-20 fade-in"
+      >
+        <div class="empty-icon-wrapper">
+          <svg
+            class="w-8 h-8 text-gray-300"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+            />
+          </svg>
+        </div>
+        <p class="text-gray-400 font-semibold text-[15px] mt-5">
+          Henüz görev yok
+        </p>
+        <p class="text-gray-300 text-[13px] mt-1">
+          Yukarıdan ilk görevini ekle
+        </p>
+      </div>
+
+      <!-- ===== LOADING ===== -->
+      <div
+        id="loadingState"
+        class="flex flex-col items-center justify-center py-20"
+      >
+        <div class="loading-spinner"></div>
+        <p class="text-gray-300 text-sm mt-5 font-medium">Yükleniyor...</p>
+      </div>
+
+      <!-- Footer -->
+      <p
+        class="text-center text-[11px] text-gray-300 mt-10 font-medium tracking-wide"
+      >
+        ✦ Çift tıklayarak görevleri düzenleyebilirsin ✦
+      </p>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div
+      id="toast"
+      class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 hidden"
+    >
+      <div
+        id="toastInner"
+        class="toast-card flex items-center gap-2.5 px-5 py-3.5 rounded-2xl transition-all"
+      >
+        <span id="toastIcon"></span>
+        <span id="toastMsg" class="text-[13px] font-semibold"></span>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
