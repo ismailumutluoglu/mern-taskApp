@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import routes from './routes/tasks.js'
 import connectDB from './db/connectDB.js';
 import notFound from './middlewares/not-found.js';
-
+import errorHandler from './middlewares/errorHandler.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/api/v1/tasks', routes);
 
 app.use(notFound);
-
+app.use(errorHandler);
 const start = async() => {
   try {
     await connectDB(process.env.DATABASE_URL);
