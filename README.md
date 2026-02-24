@@ -107,7 +107,3 @@ task-manager-app/
 │   └── 2.png
 └── README.md
 ```
-
-## Lisans
-
-MIT

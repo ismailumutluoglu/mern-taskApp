@@ -1,17 +1,17 @@
 import TaskModel from "../models/taskModel.js";
 import asyncWrapper from "../middlewares/asyncWrapper.js";
 
-export const getAllTasks = asyncWrapper(async (req, res) => {
+export const getAllTasks = asyncWrapper(async (req, res,next) => {
     const tasks = await TaskModel.find({});
     res.status(200).send({ tasks });
 });
 
-export const createTasks = asyncWrapper(async (req, res) => {
+export const createTasks = asyncWrapper(async (req, res,next) => {
     const task = await TaskModel.create(req.body);
     res.status(201).json({ task });
 });
 
-export const getSingleTasks = asyncWrapper(async (req, res) => {
+export const getSingleTasks = asyncWrapper(async (req, res,next) => {
     const { id } = req.params;
     const task = await TaskModel.findById(id);
 
@@ -22,7 +22,7 @@ export const getSingleTasks = asyncWrapper(async (req, res) => {
     res.status(200).json({ task });
 });
 
-export const updateTasks = asyncWrapper(async (req, res) => {
+export const updateTasks = asyncWrapper(async (req, res,next) => {
     const { id } = req.params;
     const updatedData = req.body;
 
@@ -38,7 +38,7 @@ export const updateTasks = asyncWrapper(async (req, res) => {
     res.status(200).json({ task });
 });
 
-export const deleteTask = asyncWrapper(async (req, res) => {
+export const deleteTask = asyncWrapper(async (req, res,next) => {
     const { id } = req.params;
     const task = await TaskModel.findByIdAndDelete(id);
 
