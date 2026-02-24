@@ -22,9 +22,9 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 //Routes
 app.use('/api/v1/tasks', routes);
-
-app.use(notFound);
+app.use(notFound)
 app.use(errorHandler);
+
 const start = async() => {
   try {
     await connectDB(process.env.DATABASE_URL);
